@@ -1,0 +1,7 @@
+{
+  "name": "lighting-music",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}

@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "lighting-music",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
