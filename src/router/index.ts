@@ -17,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'tab1',
-        component: () => import('@/views/Tab1.vue')
+        component: () => import('@/views/Tab1.vue'),
       },
       {
         path: 'tab2',
@@ -26,9 +26,16 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'tab3',
         component: () => import('@/views/Tab3.vue')
+      },
+      {
+        //歌单详情
+        path: 'songListDetail/:id',
+        name: 'songListDetail',
+        component: () => import('@/components/songListDetail.vue')
       }
     ]
-  }
+  },
+
 ]
 
 const router = createRouter({
