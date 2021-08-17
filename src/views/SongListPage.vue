@@ -9,7 +9,9 @@
           </ion-toolbar>
       </ion-header>
       <ion-content fullscreen>
-          <song-list-info-card coverUrl='http://p3.music.126.net/fob5pHV3xzGlJ_-KEeLFLg==/109951165693966983.jpg?param=200y200'></song-list-info-card>
+          <div id="container">
+            <song-list-info-card coverUrl='http://p3.music.126.net/fob5pHV3xzGlJ_-KEeLFLg==/109951165693966983.jpg?param=200y200'></song-list-info-card>
+          </div>
       </ion-content>
   </ion-page>
 </template>
@@ -36,5 +38,7 @@ export default defineComponent({
 </script>
 
 <style>
-
+#container {
+    margin: 24rem 16rem 0 16rem;
+}
 </style>
