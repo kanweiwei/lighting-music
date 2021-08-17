@@ -16,5 +16,10 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
+
+<style lang="less">
+body {
+  padding-top: constant(safe-area-inset-top) !important;
+  padding-top: env(safe-area-inset-top) !important;
+}
 </style>
