@@ -172,8 +172,6 @@ export default defineComponent({
 
       //获取tracks里歌曲数据
       song.value = playlist.tracks;
-
-      console.log(playlist);
     };
     axios();
 
