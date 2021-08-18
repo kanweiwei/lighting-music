@@ -4,17 +4,16 @@
     <ion-searchbar show-cancel-button="never" class="searchBar"></ion-searchbar>
     <ion-content>
       <div class="banners-container">
-        <ion-slides
-          :pager="true"
-          :options="slideOpts"
-          ref="slideBanners"
-          :ionSlidesDidLoad="slideLoaded($event)"
-        >
+        <ion-slides :pager="true" :options="slideOpts" ref="slideBanners" :ionSlidesDidLoad="slideLoaded">
           <ion-slide v-for="(banner, index) in banners" :key="index">
             <img :src="banner.pic" />
           </ion-slide>
         </ion-slides>
       </div>
+
+      <!-- 歌单组件 -->
+      <song-list></song-list>
+
     </ion-content>
   </ion-page>
 </template>
@@ -22,6 +21,7 @@
 <script>
 import BannerApi from "@/services/banner.service";
 import safeArea from "@/components/safe-area.vue";
+import songList from "@/components/songList.vue";//歌单列表
 import {
   IonPage,
   IonSearchbar,
@@ -37,14 +37,15 @@ export default {
     IonSlides,
     IonSlide,
     IonContent,
-    safeArea
+    safeArea,
+    songList,
   },
-  data() {
+  data () {
     return {
       banners: []
     };
   },
-  setup() {
+  setup () {
     const slideOpts = {
       initialSlide: 1,
       speed: 400,
@@ -56,11 +57,11 @@ export default {
     };
     return { slideOpts };
   },
-  ionViewDidEnter() {
+  ionViewDidEnter () {
     this.getBanners();
   },
   methods: {
-    async getBanners() {
+    async getBanners () {
       try {
         const res = await BannerApi.get({ type: 2 });
         this.banners = res.banners;
@@ -68,9 +69,9 @@ export default {
         console.log(error);
       }
     },
-    slideLoaded(e) {
+    slideLoaded (e) {
       console.log(e);
-    }
+    },
   }
 };
 </script>

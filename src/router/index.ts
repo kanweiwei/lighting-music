@@ -12,6 +12,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/home/index.vue")
   },
   {
+    //歌单详情
+    path: '/songListDetail/:id',
+    name: 'songListDetail',
+    component: () => import('@/components/songListDetail.vue')
+  },
+  {
     path: '/tabs/',
     component: Tabs,
     children: [
@@ -31,12 +37,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'tab3',
         component: () => import('@/views/Tab3.vue')
       },
-      {
-        //歌单详情
-        path: 'songListDetail/:id',
-        name: 'songListDetail',
-        component: () => import('@/components/songListDetail.vue')
-      }
+
     ]
   },
 

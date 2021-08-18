@@ -83,7 +83,7 @@ export default defineComponent({
 .box {
   width: 100%;
   height: 100%;
-  background: rgb(226, 226, 226);
+  /* background: rgb(226, 226, 226); */
 }
 
 ion-grid {

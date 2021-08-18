@@ -12,16 +12,13 @@
         </ion-toolbar>
       </ion-header>
 
-      <!-- 歌单组件 -->
-      <song-list></song-list>
-
     </ion-content>
   </ion-page>
 </template>
 
 <script lang=ts>
 import { defineComponent } from "vue";
-import songList from "../components/songList.vue";
+
 import {
   IonPage,
   IonHeader,
@@ -37,7 +34,6 @@ export default defineComponent({
     IonToolbar,
     IonTitle,
     IonContent,
-    songList,
   },
 });
 </script>
