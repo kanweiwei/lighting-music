@@ -250,8 +250,7 @@ export default defineComponent({
   z-index: 2;
   border-radius: 20rem;
 }
-.stateGrid .stateRow {
-}
+
 .stateGrid .stateRow .vertical {
   color: #ccc;
 }
@@ -262,9 +261,7 @@ export default defineComponent({
   justify-content: center;
   padding: 0;
 }
-.stateGrid .stateRow .cirleLeft {
-}
-.stateGrid .stateRow .add span {
+tateGrid .stateRow .add span {
   margin-left: 2rem;
 }
 .stateGrid .stateRow .comment span {
@@ -294,8 +291,7 @@ export default defineComponent({
   color: #a8a7a7;
   font-weight: 500;
 }
-.content-row {
-}
+
 .index {
   display: flex;
   align-items: center;
