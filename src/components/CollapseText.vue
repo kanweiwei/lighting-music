@@ -1,3 +1,4 @@
+<!-- 省略文本组件，必要参数line，指定文本内容保留行数 -->
 <template>
     <div id="text">
         <slot></slot>
@@ -10,7 +11,10 @@ import { defineComponent } from "@vue/runtime-core";
 export default defineComponent({
     name: 'collapse-text',
     props: {
-        line: Number
+        line: {
+            type: Number,
+            required: true
+        }
     }
 })
 </script>
