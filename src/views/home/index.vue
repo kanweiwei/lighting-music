@@ -4,17 +4,16 @@
     <ion-searchbar show-cancel-button="never" class="searchBar"></ion-searchbar>
     <ion-content>
       <div class="banners-container">
-        <ion-slides
-          :pager="true"
-          :options="slideOpts"
-          ref="slideBanners"
-          :ionSlidesDidLoad="slideLoaded($event)"
-        >
-          <ion-slide v-for="(banner, index) in banners" :key="index">
-            <img :src="banner.pic" />
-          </ion-slide>
-        </ion-slides>
+        <van-swipe :autoplay="3000" :lazy-render="true">
+          <van-swipe-item v-for="banner in banners" :key="banner.bannerId">
+            <img v-lazy="banner.pic" />
+            <div class="img-label">新歌首发</div>
+          </van-swipe-item>
+        </van-swipe>
       </div>
+
+      <!-- 歌单组件 -->
+      <song-list></song-list>
     </ion-content>
   </ion-page>
 </template>
@@ -22,22 +21,19 @@
 <script>
 import BannerApi from "@/services/banner.service";
 import safeArea from "@/components/safe-area.vue";
-import {
-  IonPage,
-  IonSearchbar,
-  IonSlides,
-  IonSlide,
-  IonContent
-} from "@ionic/vue";
+import songList from "@/components/songList.vue"; //歌单列表
+import { IonPage, IonSearchbar, IonContent } from "@ionic/vue";
+import { Swipe, SwipeItem } from "vant";
 
 export default {
   components: {
     IonPage,
     IonSearchbar,
-    IonSlides,
-    IonSlide,
     IonContent,
-    safeArea
+    safeArea,
+    songList,
+    VanSwipe: Swipe,
+    VanSwipeItem: SwipeItem
   },
   data() {
     return {
@@ -82,5 +78,21 @@ export default {
     0px 1px 3px 0px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   overflow: hidden;
+  .van-swipe-item {
+    font-size: 0;
+    .img-label {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 65rem;
+      height: 20rem;
+      background: #f7b500;
+      box-shadow: 0rem 2rem 10rem 0rem rgba(0, 0, 0, 0.5);
+      border-radius: 15rem 0rem 9rem 0rem;
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+    }
+  }
 }
 </style>

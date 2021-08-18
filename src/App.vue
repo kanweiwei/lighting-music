@@ -12,10 +12,11 @@ export default defineComponent({
   name: "App",
   components: {
     IonApp,
-    IonRouterOutlet
-  }
+    IonRouterOutlet,
+  },
 });
 </script>
+
 <style lang="less">
 body {
   padding-top: constant(safe-area-inset-top) !important;

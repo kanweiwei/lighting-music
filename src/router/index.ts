@@ -12,8 +12,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/home/index.vue")
   },
   {
-    path: '/songList',
-    component: ()=> import('@/views/SongListPage.vue')
+    //歌单详情
+    path: '/songListDetail/:id',
+    name: 'songListDetail',
+    component: () => import('@/components/songListDetail.vue')
   },
   {
     path: '/tabs/',
@@ -25,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'tab1',
-        component: () => import('@/views/Tab1.vue')
+        component: () => import('@/views/Tab1.vue'),
       },
       {
         path: 'tab2',
@@ -34,9 +36,11 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'tab3',
         component: () => import('@/views/Tab3.vue')
-      }
+      },
+
     ]
-  }
+  },
+
 ]
 
 const router = createRouter({

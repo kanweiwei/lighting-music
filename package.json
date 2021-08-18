@@ -25,6 +25,7 @@
     "cordova-plugin-file": "^6.0.2",
     "core-js": "^3.6.5",
     "query-string": "^7.0.1",
+    "vant": "^3.2.0",
     "vue": "^3.2.1",
     "vue-router": "^4.0.0-0"
   },
@@ -43,6 +44,7 @@
     "@vue/compiler-sfc": "^3.0.0-0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^2.0.0-0",
+    "babel-plugin-import": "^1.13.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
     "less": "^4.1.1",
