@@ -10,7 +10,13 @@
       </ion-header>
       <ion-content fullscreen>
           <div id="container">
-            <song-list-info-card coverUrl='http://p3.music.126.net/fob5pHV3xzGlJ_-KEeLFLg==/109951165693966983.jpg?param=200y200'></song-list-info-card>
+            <song-list-info-card 
+                coverUrl='http://p3.music.126.net/fob5pHV3xzGlJ_-KEeLFLg==/109951165693966983.jpg?param=200y200'
+                title="这是标题"
+                userName="用户名"
+                description="描述"
+                createDate="1594293683139"
+            ></song-list-info-card>
           </div>
       </ion-content>
   </ion-page>
@@ -19,7 +25,7 @@
 <script lang="ts">
 import SongListInfoCard from '@/components/SongList/SongListInfoCard.vue';
 import { IonPage,IonHeader,IonToolbar,IonButtons,IonBackButton,IonTitle,IonContent } from '@ionic/vue'
-import { defineComponent } from "vue";
+import { defineComponent} from "vue";
 
 export default defineComponent({
     name: 'song-list',

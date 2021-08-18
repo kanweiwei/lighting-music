@@ -8,11 +8,15 @@
             </ion-col>
             <ion-col id="infos">
                 <ion-row id="title">
-                    <collapse-text :line="2">标题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题</collapse-text>
+                    <collapse-text :line="2">{{title}}</collapse-text>
                 </ion-row>
-                <ion-row>作者</ion-row>
-                <ion-row>创建时间</ion-row>
-                <ion-row id="description">歌单描述</ion-row>
+                <ion-row>
+                    {{userName}}
+                </ion-row>
+                <ion-row>{{dateString}} 创建</ion-row>
+                <ion-row id="description">
+                    <collapse-text :line="1">{{description}}</collapse-text>
+                </ion-row>
             </ion-col>
         </ion-row>
     </ion-grid>
@@ -33,16 +37,43 @@ export default defineComponent({
         CollapseText
     },
     props: {
-        coverUrl:String
+        coverUrl:String,
+        title:String,
+        userName:String,
+        description:String,
+        createDate: String
+    },
+    computed: {
+        dateString(){
+            if(typeof this.createDate === "string"){
+                //时间戳只支持数字
+                const vaildValue=parseInt(this.createDate)
+                const date=new Date(vaildValue)
+                //整理格式YYYY-MM-DD
+                const format=date.toLocaleString().split(" ")[0].split("/")
+                            .map(val=>val.length==1?"0"+val:val) //补0
+                            .join("-")                
+                return format
+            }else{
+                return 'unknown'
+            }    
+        }
     }
 })
 </script>
 <style lang="less">
 #infos {
     position: relative;
+    font-size: 16px;
+    color: gray;
+    #title {
+        font-size: 18px;
+        color: black;
+        margin-bottom: 8rem;
+    }
     #description {
         position: absolute;
-        bottom: 5rem;
+        bottom: 4rem;
     }
 }
 
