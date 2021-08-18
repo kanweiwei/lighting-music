@@ -33,6 +33,7 @@
 import { IonGrid, IonRow, IonCol, IonImg } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
+import { countFilter } from "@/utils/commont";
 
 export default defineComponent({
   components: { IonGrid, IonRow, IonCol, IonImg },
@@ -54,13 +55,6 @@ export default defineComponent({
     axios();
 
     //播放量过滤
-    const countFilter = (count: number): string => {
-      if (count > 10000) {
-        return (count / 1000).toFixed(0) + "w";
-      } else {
-        return count + "";
-      }
-    };
 
     //跳转歌单详情
     const fn = (id: string) => {
