@@ -18,6 +18,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/components/songListDetail.vue')
   },
   {
+    path: '/comment/:type/:id',
+    name: 'comment',
+    component: () => import('@/views/CommentPage.vue')
+  },
+  {
     path: '/tabs/',
     component: Tabs,
     children: [
