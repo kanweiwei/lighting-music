@@ -1,7 +1,7 @@
 //数量过十万进行过滤
 export const countFilter = (count: number | string, n = 0): string => {
     if (count > 10000) {
-        return (Number(count) / 1000).toFixed(n) + "w";
+        return (Number(count) / 10000).toFixed(n) + "w";
     } else {
         return count + "";
     }

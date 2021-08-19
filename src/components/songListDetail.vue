@@ -7,11 +7,12 @@
     </ion-header> -->
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
-        <ion-toolbar>
+        <van-nav-bar left-text="歌单广场" left-arrow @click-left="onClickLeft" />
+        <!-- <ion-toolbar>
           <ion-buttons>
             <ion-back-button default-href="/" color="dark"></ion-back-button>
           </ion-buttons>
-        </ion-toolbar>
+        </ion-toolbar> -->
       </ion-header>
 
       <div v-if="!bol" class="load">
@@ -36,8 +37,11 @@
                   </ion-col>
                 </ion-row>
                 <ion-row>
-                  <ion-col class="descriptionBox">
+                  <ion-col class="descriptionBox" size="11">
                     <div class="description">{{data.description}}</div>
+                  </ion-col>
+                  <ion-col size="1">
+                    <div class="more">&gt;</div>
                   </ion-col>
                 </ion-row>
                 <ion-row>
@@ -98,6 +102,7 @@
         </ion-grid>
       </div>
     </ion-content>
+
   </ion-page>
 </template>
 
@@ -107,34 +112,29 @@ import { defineComponent, ref } from "vue";
 import {
   IonPage,
   IonHeader,
-  IonToolbar,
   IonContent,
   IonGrid,
   IonRow,
   IonCol,
   IonImg,
-  IonButtons,
-  IonBackButton,
 } from "@ionic/vue";
 
 //路由
 import { useRouter } from "vue-router";
-import { Icon } from "vant";
+import { Icon, NavBar } from "vant";
 import { countFilter, toTime } from "@/utils/commont";
 
 export default defineComponent({
   components: {
     IonPage,
     IonHeader,
-    IonToolbar,
     IonContent,
     IonGrid,
     IonRow,
     IonCol,
     IonImg,
     vanIcon: Icon,
-    IonButtons,
-    IonBackButton,
+    vanNavBar: NavBar,
   },
   setup() {
     //路由
@@ -150,11 +150,6 @@ export default defineComponent({
     const song = ref([]); //歌曲
 
     const bol = ref(false); //判断加载
-
-    //返回上一个页面
-    const back = () => {
-      router.back();
-    };
 
     const axios = async () => {
       //获取数据playlist
@@ -175,8 +170,12 @@ export default defineComponent({
     };
     axios();
 
+    //返回上一页
+    const onClickLeft = () => {
+      router.back();
+    };
+
     return {
-      back,
       data,
       avatarUrls,
       nicknames,
@@ -184,11 +183,16 @@ export default defineComponent({
       bol,
       toTime,
       countFilter,
+      onClickLeft,
     };
   },
 });
 </script>
 <style scoped>
+.van-nav-bar {
+  --van-nav-bar-text-color: black;
+  --van-nav-bar-icon-color: black;
+}
 .load {
   display: flex;
   align-items: center;
@@ -235,6 +239,9 @@ export default defineComponent({
   overflow: hidden;
   color: rgb(230, 218, 218);
 }
+.more {
+  color: rgb(230, 218, 218);
+}
 
 .stateGrid {
   position: absolute;
@@ -259,7 +266,7 @@ export default defineComponent({
   justify-content: center;
   padding: 0;
 }
-tateGrid .stateRow .add span {
+.stateGrid .stateRow .add span {
   margin-left: 2rem;
 }
 .stateGrid .stateRow .comment span {
@@ -296,6 +303,10 @@ tateGrid .stateRow .add span {
   justify-content: center;
   font-size: 14rem;
   color: rgb(199, 170, 180);
+}
+
+.content-row {
+  margin-bottom: 10rem;
 }
 .content .title {
   font-size: 15rem;

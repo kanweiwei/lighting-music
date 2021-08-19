@@ -1,4 +1,4 @@
-import http from "@/utils/http";
+import http from "@/utils/http.js";
 import { stringify } from "query-string";
 
 export default class BannerService {
@@ -7,7 +7,7 @@ export default class BannerService {
      * type 0 pc, 1 android, 2 iphone, 3 ipad
      * 
      */
-    static get(data){
-        return http.get('/banner?'+ stringify(data))
+    static get(data) {
+        return http.get('/banner?' + stringify(data))
     }
 }

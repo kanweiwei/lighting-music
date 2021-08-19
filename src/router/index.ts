@@ -18,6 +18,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/components/songListDetail.vue')
   },
   {
+    //更多歌单
+    path: '/songListAll',
+    name: 'songListAll',
+    component: () => import('@/components/songListAll.vue')
+  },
+  {
     path: '/tabs/',
     component: Tabs,
     children: [
