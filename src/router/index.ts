@@ -20,7 +20,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/comment/:type/:id',
     name: 'comment',
-    component: () => import('@/views/CommentPage.vue')
+    component: () => import('@/views/CommentPage.vue')    
+  },
+  {
+    //更多歌单
+    path: '/songListAll',
+    name: 'songListAll',
+    component: () => import('@/components/songListAll.vue')
   },
   {
     path: '/tabs/',

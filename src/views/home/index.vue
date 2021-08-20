@@ -13,19 +13,18 @@
       </div>
 
       <!-- 精品歌单，可重用 -->
-      <song-list-slider title="次车库的雷达歌单" tag="欧美"></song-list-slider>
+      <song-list title="次车库的雷达歌单" tag="欧美"></song-list>
 
       <!-- 推荐歌单 -->
-      <song-list></song-list>
+      <song-list title="推荐歌单" mode="col" type="recommend" :num=9></song-list>
     </ion-content>
   </ion-page>
 </template>
 
 <script>
-import BannerApi from "@/services/banner.service";
+import BannerApi from "@/services/banner.service.js";
 import safeArea from "@/components/safe-area.vue";//搜索框
 import songList from "@/components/songList.vue"; //歌单列表
-import songListSlider from "@/components/songListSlider.vue"; //歌单列表
 import { IonPage, IonSearchbar, IonContent } from "@ionic/vue";
 import { Swipe, SwipeItem } from "vant";
 
@@ -38,7 +37,6 @@ export default {
     songList,
     VanSwipe: Swipe,
     VanSwipeItem: SwipeItem,
-    songListSlider
   },
   data () {
     return {
