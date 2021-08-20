@@ -13,15 +13,20 @@
                     <p id="like-count">{{likedCount}}赞</p>                   
                 </div>
                 <p id="content">{{content}}</p>
+                <p v-if="showFloorComment.replyCount>0">
+                    <ion-text color="primary" @click="showPopup(commentId)">{{showFloorComment.replyCount}}条回复></ion-text>
+                </p>
+                <p id="reply" v-if="beReplied!= null">
+                    <ion-text color="primary">@{{beReplied[0].user.nickname}}</ion-text>:{{beReplied[0].content}}
+                </p>
             </ion-label>
-        </ion-item>
-        
+        </ion-item>        
     </div>
 </template>
 
 <script>
 import { defineComponent } from "@vue/runtime-core";
-import { IonAvatar,IonLabel,IonItem } from '@ionic/vue'
+import { IonAvatar,IonLabel,IonItem,IonText } from '@ionic/vue'
 
 export default defineComponent({
     name: 'comment-card',
@@ -30,11 +35,16 @@ export default defineComponent({
         content:String,
         time:Number,
         likedCount:Number,
+        showFloorComment:Object,
+        beReplied:Object,
+        showPopup:Function,
+        commentId:Number
     },
     components: {
         IonAvatar,
         IonLabel,
-        IonItem
+        IonItem,
+        IonText
     },
     computed: {
         localTime(){
@@ -53,6 +63,7 @@ export default defineComponent({
 </script>
 
 <style>
+
 #commment-header {
     display: flex;
     flex-direction: row;
@@ -72,5 +83,12 @@ export default defineComponent({
 }
 #comment {
     align-items:flex-start;
+    background-color: rgb(250, 250, 250);
+}
+#reply {
+    padding-left: 8rem;
+    line-height: 24px;
+    border-left: 1rem solid gray;
+    font-size: 12px;
 }
 </style>

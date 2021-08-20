@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
-import { Lazyload,List } from 'vant';
+import { Lazyload,List,Sticky,Popup } from 'vant';
 
 import { IonicVue } from '@ionic/vue';
 
@@ -29,6 +29,8 @@ const app = createApp(App)
   .use(IonicVue)
   .use(Lazyload)
   .use(List)
+  .use(Sticky)
+  .use(Popup)
   .use(router);
 
 router.isReady().then(() => {
