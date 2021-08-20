@@ -9,13 +9,21 @@
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <div v-for="comment in comments" :key="comment.commentId">
-                <comment-card 
-                :user="comment.user" 
-                :content="comment.content" 
-                :time="comment.time" 
-                :likedCount="comment.likedCount"></comment-card>
-            </div>
+            <van-list
+            v-model:loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="getMoreComment"
+            style="height:100%;width:100%;overflow-y:auto;"
+            >
+                <div v-for="comment in comments" :key="comment.commentId">
+                    <comment-card 
+                    :user="comment.user" 
+                    :content="comment.content" 
+                    :time="comment.time" 
+                    :likedCount="comment.likedCount"></comment-card>
+                </div>               
+            </van-list>
         </ion-content>
     </ion-page>
 </template>
@@ -47,7 +55,8 @@ export default defineComponent({
             sortType: 1,
             pageNo:1,
             cursor:'0',
-            hasMore: false
+            finished:false,
+            loading:false
         }
     },
     methods: {
@@ -73,18 +82,23 @@ export default defineComponent({
             }).then(res=>res.data)
             .then(data=>{
                 this.comments.push(...data.comments)
-                this.hasMore=data.hasMore
+                this.finished=!data.hasMore
                 this.cursor=data.cursor
                 this.totalCount=data.totalCount
-            }).catch(err=>console(err))
-            
+                this.loading=false
+            }).catch(err=>console(err))           
+        },
+        getMoreComment(){
+            const typeNum=this.getTypeNum(this.type)
+            this.pageNo+=1
+            this.getCommentData(typeNum,this.id,2,this.pageNo)
         }
     },
     ionViewDidEnter(){
         this.id=this.$route.params.id
         this.type=this.$route.params.type
         const typeNum=this.getTypeNum(this.type)
-        this.getCommentData(typeNum,this.id,1,1)
+        this.getCommentData(typeNum,this.id,2,1)
     }
 })
 </script>
