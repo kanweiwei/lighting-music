@@ -62,7 +62,7 @@
                 <span>{{countFilter(data.subscribedCount, 1)}}</span>
               </ion-col>
               <ion-col class="vertical">|</ion-col>
-              <ion-col class="col comment" size="3">
+              <ion-col class="col comment" size="3" @click="onRouteToComment">
                 <van-icon name="comment-o" size='20rem' />
                 <span>{{data.commentCount}}</span>
               </ion-col>
@@ -225,6 +225,11 @@ export default defineComponent({
       router.back();
     };
 
+    //评论
+    const onRouteToComment = () => {
+      router.push(`/comment/playlist/${id.value}`);
+    };
+
     return {
       data,
       avatarUrls,
@@ -236,6 +241,7 @@ export default defineComponent({
       onClickLeft,
       fn,
       box,
+      onRouteToComment,
     };
   },
 });
