@@ -48,11 +48,15 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <!-- 占位 -->
+  <div class="box" :style="{'text-align':'center', 'opacity':show}">没有更多歌单了哦...</div>
+
 </template>
 
 <script lang='ts'>
 import { IonGrid, IonRow, IonCol, IonImg } from "@ionic/vue";
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { countFilter } from "@/utils/commont";
 import { Icon } from "vant";
@@ -91,7 +95,7 @@ export default defineComponent({
       default: "1",
     },
   },
-  setup(props, context) {
+  setup(props) {
     //横向滑动独有配置
     let disX = 0; //鼠标点击时x轴坐标
 
@@ -126,14 +130,26 @@ export default defineComponent({
       end = move.value;
     }
 
+    // --------------------------------------------------
+    // --------------------------------------------------
+    // --------------------------------------------------
+    // --------------------------------------------------
+    // --------------------------------------------------
+
     //公用配置
     const data: any = ref([]); //数据
 
     const router = useRouter(); //路由
 
+    const num = ref(props.num); //加载数据
+
     let n = 1; //分割数据
+
     let total = 0; //总数
+
     let timer = false; //节流
+
+    const show = ref(0); //底部显示隐藏
 
     let url = ""; //地址
 
@@ -141,15 +157,15 @@ export default defineComponent({
       throw new Error("横向滑动暂支持六张照片");
     }
 
+    //获取数据
     const axios = async () => {
       if (props.type === "good") {
         //判断地址
-        url = `https://qcz1as.app.cloudendpoint.cn/top/playlist/highquality?limit=${props.num}&cat=${props.tag}`;
+        url = `https://qcz1as.app.cloudendpoint.cn/top/playlist/highquality?limit=${num.value}&cat=${props.tag}`;
       } else if (props.type === "recommend") {
-        url = `https://qcz1as.app.cloudendpoint.cn/personalized?limit=${props.num}`;
+        url = `https://qcz1as.app.cloudendpoint.cn/personalized?limit=${num.value}`;
       }
 
-      //获取数据
       if (props.type === "good") {
         const result = await (await fetch(url)).json();
         total = result.total;
@@ -157,8 +173,6 @@ export default defineComponent({
           ...data.value,
           ...result.playlists.slice((n - 1) * 15, n * 15),
         ];
-
-        // console.log(data.value.length);
       } else if (props.type === "recommend") {
         const { result } = await (await fetch(url)).json();
         data.value = result;
@@ -190,24 +204,21 @@ export default defineComponent({
       });
     };
 
-    //num发生变化时
-    watch(
-      () => {
-        return props.num;
-      },
-      () => {
-        if (!timer) {
-          timer = true;
-          if (data.value.length < total) {
-            n++;
-            axios();
-            timer = false;
-          } else {
-            context.emit("ok");
-          }
+    //加载更多
+    const loadedMore = () => {
+      if (!timer) {
+        timer = true;
+        if (data.value.length < total) {
+          n++;
+          num.value += 15;
+          console.log(n, num.value);
+          axios();
+        } else {
+          show.value = 1;
         }
+        timer = false;
       }
-    );
+    };
 
     return {
       touchStart,
@@ -219,6 +230,8 @@ export default defineComponent({
       countFilter,
       strFilter,
       more,
+      loadedMore,
+      show,
     };
   },
 });
@@ -302,5 +315,9 @@ ion-grid {
   border-width: 6rem;
   border-color: transparent transparent transparent white;
   border-style: solid;
+}
+.box {
+  height: 10rem;
+  width: 100%;
 }
 </style>

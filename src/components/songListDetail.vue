@@ -5,7 +5,7 @@
         <ion-title>Tab 1</ion-title>
       </ion-toolbar>
     </ion-header> -->
-    <ion-content :fullscreen="true">
+    <ion-content scrollEvents @ionScroll='fn'>
       <ion-header collapse="condense">
         <van-nav-bar left-text="歌单广场" left-arrow @click-left="onClickLeft" />
         <!-- <ion-toolbar>
@@ -84,7 +84,7 @@
             </ion-col>
             <ion-col size="11" class="content">
               <div class="title">播放全部</div>
-              <div class="length">（{{song.length}}）</div>
+              <div class="length">（{{data.trackIds.length}}）</div>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -101,6 +101,9 @@
           </ion-row>
         </ion-grid>
       </div>
+
+      <!-- 占位 -->
+      <div class="box" ref="box"></div>
     </ion-content>
 
   </ion-page>
@@ -123,6 +126,10 @@ import {
 import { useRouter } from "vue-router";
 import { Icon, NavBar } from "vant";
 import { countFilter, toTime } from "@/utils/commont";
+
+interface AllList {
+  id: number;
+}
 
 export default defineComponent({
   components: {
@@ -147,9 +154,51 @@ export default defineComponent({
     const avatarUrls = ref(""); //用户头像
     const nicknames = ref(""); //用户名字
 
-    const song = ref([]); //歌曲
+    const song: any = ref([]); //歌曲
 
     const bol = ref(false); //判断加载
+
+    //防抖
+    let timer: any = null;
+
+    //滑动
+    const box = ref();
+
+    //可见高
+    const clientHeight = document.body.clientHeight;
+
+    //元素属性
+    let rect: any;
+
+    //分割数据
+    let n = 1;
+
+    async function allSong(data: any) {
+      //用户登录歌曲数量
+      let url = "https://qcz1as.app.cloudendpoint.cn/song/detail?ids=";
+
+      // console.log(playlist.trackIds);
+      data.trackIds.map((item: AllList, index: number) => {
+        if (index < 15 * n) {
+          url += item.id + ",";
+        }
+      });
+      url = url.slice(0, -1);
+      const result = await (await fetch(url)).json();
+      song.value = [...song.value, ...result.songs.slice((n - 1) * 15, n * 15)];
+    }
+
+    //滚动
+    const fn = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        rect = box.value.getBoundingClientRect();
+        if (rect.top < clientHeight) {
+          n++;
+          allSong(data.value);
+        }
+      }, 500);
+    };
 
     const axios = async () => {
       //获取数据playlist
@@ -165,8 +214,9 @@ export default defineComponent({
       avatarUrls.value = playlist.creator.avatarUrl; //用户头像
       nicknames.value = playlist.creator.nickname; //用户名字
 
-      //获取tracks里歌曲数据
-      song.value = playlist.tracks;
+      allSong(playlist);
+      //没有登陆时，获取tracks里歌曲数据
+      // song.value = playlist.tracks;
     };
     axios();
 
@@ -184,6 +234,8 @@ export default defineComponent({
       toTime,
       countFilter,
       onClickLeft,
+      fn,
+      box,
     };
   },
 });
@@ -322,5 +374,9 @@ export default defineComponent({
   transform: rotate(90deg);
   font-size: 20rem;
   color: rgb(199, 170, 180);
+}
+.box {
+  height: 10rem;
+  width: 100%;
 }
 </style>

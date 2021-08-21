@@ -1,7 +1,8 @@
 <template>
   <ion-page>
     <safe-area />
-    <ion-searchbar show-cancel-button="never" class="searchBar"></ion-searchbar>
+    <!-- <ion-searchbar show-cancel-button="never" class="searchBar"></ion-searchbar> -->
+    <search></search>
     <ion-content>
       <div class="banners-container">
         <van-swipe :autoplay="3000" :lazy-render="true">
@@ -13,7 +14,9 @@
       </div>
 
       <!-- 精品歌单，可重用 -->
-      <song-list title="次车库的雷达歌单" tag="欧美"></song-list>
+      <div style="margin-top:10rem">
+        <song-list title="次车库的雷达歌单" tag="欧美"></song-list>
+      </div>
 
       <!-- 推荐歌单 -->
       <song-list title="推荐歌单" mode="col" type="recommend" :num=9></song-list>
@@ -25,18 +28,19 @@
 import BannerApi from "@/services/banner.service.js";
 import safeArea from "@/components/safe-area.vue";//搜索框
 import songList from "@/components/songList.vue"; //歌单列表
-import { IonPage, IonSearchbar, IonContent } from "@ionic/vue";
+import Search from './search.vue'
+import { IonPage, IonContent } from "@ionic/vue";
 import { Swipe, SwipeItem } from "vant";
 
 export default {
   components: {
     IonPage,
-    IonSearchbar,
     IonContent,
     safeArea,
     songList,
     VanSwipe: Swipe,
     VanSwipeItem: SwipeItem,
+    Search
   },
   data () {
     return {

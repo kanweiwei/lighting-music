@@ -24,6 +24,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/components/songListAll.vue')
   },
   {
+    //更多歌单
+    path: '/searchDetail/:kw',
+    name: 'searchDetail',
+    component: () => import('@/views/home/searchDetail.vue')
+  },
+  {
     path: '/tabs/',
     component: Tabs,
     children: [

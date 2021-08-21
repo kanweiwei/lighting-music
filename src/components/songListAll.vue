@@ -1,19 +1,24 @@
 <template>
   <ion-page>
-    <ion-content style="position:relative">
+
+    <ion-content scrollEvents @ionScroll='fn'>
       <ion-header>
         <van-nav-bar left-text="歌单广场" left-arrow @click-left="onClickLeft" />
       </ion-header>
 
-      <van-tabs v-model:active="active" @click-tab='clickFn'>
+      <van-tabs v-model:active="active">
         <van-tab v-for="tag in tags" :key="tag.playlistTag.id" :title="tag.playlistTag.name"
-          :name="tag.playlistTag.name" @touchend='touchEnd'>
-          <song-list mode="col" showHead="0" :tag="active" :num="page" @ok="show=1"></song-list>
+          :name="tag.playlistTag.name">
+          <song-list mode="col" showHead="0" :tag="active" :num="page" @ok="show=1" ref="songList"></song-list>
         </van-tab>
       </van-tabs>
 
       <!-- 占位 -->
-      <div class="box" ref="box" :style="{'text-align':'center', 'opacity':show}">没有更多歌单了哦...</div>
+      <div class="box" ref="box"></div>
+
+      <!-- 回到顶部 -->
+      <!-- <van-icon @click="toTop" name="back-top" class="toTop" size="25rem" color="red" /> -->
+      <div @click="toTop" class="toTop">123123</div>
     </ion-content>
 
   </ion-page>
@@ -54,6 +59,52 @@ export default defineComponent({
     //显示隐藏
     const show = ref(0);
 
+    //更新内容
+    const songList = ref();
+
+    //滑动
+    const box = ref();
+
+    //可见高
+    const clientHeight = document.body.clientHeight;
+
+    //元素属性
+    let rect: any;
+
+    //分页
+    const page = ref(15);
+
+    //防抖
+    let timer: any = null;
+
+    //回到顶部
+    const showToTop = ref(false);
+
+    //回到顶部函数
+    const toTop = () => {
+      const top = document.querySelector("ion-content");
+      if (top) {
+        top.scrollToTop(500);
+      }
+    };
+
+    //滚动函数
+    const fn = (ev: any) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        rect = box.value.getBoundingClientRect();
+        if (rect.top < clientHeight) {
+          songList.value.loadedMore();
+        }
+
+        if (ev.detail.scrollTop > 100) {
+          showToTop.value = true;
+        } else {
+          showToTop.value = false;
+        }
+      }, 500);
+    };
+
     //tag标签
     const axios = async () => {
       const { tags: data } = await (
@@ -63,36 +114,17 @@ export default defineComponent({
     };
     axios();
 
-    //分页
-    const page = ref(15);
-
-    //滑动
-    const box = ref();
-    const clientHeight = document.body.clientHeight;
-    let rect: any;
-
-    //到底时加载
-    const touchEnd = () => {
-      rect = box.value.getBoundingClientRect();
-      if (rect.top - 10 < clientHeight) {
-        page.value += 15;
-      }
-    };
-
-    //底部标识重新隐藏
-    const clickFn = () => {
-      show.value = 0;
-    };
-
     return {
       tags,
       onClickLeft,
       active,
       page,
-      touchEnd,
       box,
       show,
-      clickFn,
+      songList,
+      fn,
+      showToTop,
+      toTop,
     };
   },
 });
@@ -104,8 +136,14 @@ export default defineComponent({
   --van-nav-bar-icon-color: black;
 }
 .box {
-  position: absolute;
   height: 10rem;
   width: 100%;
+}
+.toTop {
+  position: fixed;
+  bottom: 90rem;
+  background-color: white;
+  overflow: hidden;
+  border-radius: 100%;
 }
 </style>
