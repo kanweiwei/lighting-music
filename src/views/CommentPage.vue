@@ -44,7 +44,33 @@
             </van-list>
             <van-popup v-model:show="show" position="bottom" round>
                 <div id="reply-floor">
-                    《-回复
+                    <van-sticky :offset-top="68">
+                        <div id="reply-header" @click="()=>show=!show"><h5>X回复({{replyComment.totalCount}})</h5> </div>
+                    </van-sticky>
+                    <van-list
+                    v-model:loading="replyComment.loading"
+                    :finished="replyComment.finished"
+                    finished-text="没有更多了"
+                    @load="getMoreFloorComment"
+                    >
+                        <comment-card
+                        :user="replyComment.ownerComment.user"
+                        :content="replyComment.ownerComment.content"
+                        :time="replyComment.ownerComment.time"
+                        :likedCount="replyComment.ownerComment.likedCount"
+                        ></comment-card>
+                        <div id="reply-bar">全部回复</div>
+                        <div v-for="comment in replyComment.replyComments" :key="comment.commentId">
+                            <comment-card
+                            :user="comment.user" 
+                            :content="comment.content" 
+                            :time="comment.time" 
+                            :likedCount="comment.likedCount"
+                            :beReplied="comment.beReplied[0].beRepliedCommentId!=replyComment.cid?comment.beReplied:null"
+                            ></comment-card>
+                        </div>
+                    </van-list>
+
                 </div>
             </van-popup>
         </ion-content>
@@ -52,7 +78,7 @@
 </template>
 <script>
 
-import { defineComponent,ref } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core";
 import { IonPage,IonHeader,IonButtons,IonTitle,IonBackButton,IonToolbar,IonContent } from '@ionic/vue'
 import http from "@/utils/http";
 import CommentCard from "@/components/comment/commentCard.vue";
@@ -81,24 +107,23 @@ export default defineComponent({
             finished:false,
             loading:false,
             activeTab:99,
-            popupHeight:(document.body.clientHeight-64)+'rem',
+            popupHeight:(document.body.clientHeight-68)+'rem',
             tabs:[
                 {name:'推荐',value:99},
                 {name:'最热',value:2},
                 {name:'最新',value:3}
-            ]
+            ],
+            show:false,
+            replyComment:{
+                cid: 0,
+                time: 0,
+                ownerComment:{},
+                replyComments: [],
+                totalCount:0,
+                finished:false,
+                loading:false
+            }
         }
-    },
-    setup() {
-        const show = ref(false);
-        const showPopup = (msg) => {
-            console.log(msg)
-            show.value = true;
-        };
-        return {
-            show,
-            showPopup,
-        };
     },
     methods: {
         getTypeNum(type){
@@ -140,6 +165,38 @@ export default defineComponent({
             const typeNum=this.getTypeNum(this.type)
             this.pageNo=1
             this.getCommentData(typeNum,this.id,this.activeTab,this.pageNo,this.cursor)
+        },
+        showPopup(msg){
+            this.getFloorComment(msg)
+            .then(data=>{
+                this.replyComment.cid=msg
+                this.replyComment.ownerComment=data.ownerComment
+                this.replyComment.time=data.time
+                this.replyComment.replyComments=[]
+                this.replyComment.replyComments.push(...data.comments)
+                this.replyComment.totalCount=data.totalCount
+                this.replyComment.finished=!data.hasMore
+            })
+            .then(()=>this.show = true)           
+        },
+        getFloorComment(cid,time){
+            return http.get('/comment/floor',{
+                params: {
+                    parentCommentId: cid,
+                    id: this.id,
+                    type: this.getTypeNum(this.type),
+                    time
+                }
+            }).then(res=>res.data)
+        },
+        getMoreFloorComment(){
+            this.getFloorComment(this.replyComment.cid,this.replyComment.time)
+            .then(data=>{
+                this.replyComment.time=data.time
+                this.replyComment.replyComments.push(...data.comments)
+                this.replyComment.loading=false
+                this.replyComment.finished=!data.hasMore
+            })
         }
     },
     ionViewDidEnter(){
@@ -178,5 +235,20 @@ export default defineComponent({
 #reply-floor {
     height: v-bind(popupHeight);
     background-color: #fff;
+}
+#reply-header {
+    border-top-left-radius: 16rem;
+    border-top-right-radius: 16rem;
+    height: 60rem;
+    padding: 0 14rem;
+    padding-top: 4rem;
+    background-color: #fff;
+}
+#reply-bar {
+    background: rgb(230, 230, 230);
+    padding: 4rem 0;
+    padding-left: 14rem;
+    font-size: 14px;
+    font-weight: bold;
 }
 </style>

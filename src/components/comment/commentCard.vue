@@ -13,11 +13,12 @@
                     <p id="like-count">{{likedCount}}赞</p>                   
                 </div>
                 <p id="content">{{content}}</p>
-                <p v-if="showFloorComment.replyCount>0">
+                <p v-if="showFloorComment && showFloorComment.replyCount>0">
                     <ion-text color="primary" @click="showPopup(commentId)">{{showFloorComment.replyCount}}条回复></ion-text>
                 </p>
                 <p id="reply" v-if="beReplied!= null">
-                    <ion-text color="primary">@{{beReplied[0].user.nickname}}</ion-text>:{{beReplied[0].content}}
+                    <ion-text color="primary">@{{beReplied[0].user.nickname}}</ion-text>
+                    :{{beReplied[0].content?beReplied[0].content:'该评论已删除'}}
                 </p>
             </ion-label>
         </ion-item>        
