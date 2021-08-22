@@ -109,6 +109,7 @@ export default {
       this.playing = false;
     },
     timeUpdate(e) {
+      if (!this.$refs.audio) return;
       this.currentTime = parseInt(this.$refs.audio.currentTime);
       if (this.totalTime == 0) {
         this.percent = 0;
