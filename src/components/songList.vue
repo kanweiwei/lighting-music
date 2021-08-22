@@ -1,57 +1,79 @@
 <template>
   <ion-grid>
-    <ion-row v-if="showHead==='1'">
+    <ion-row v-if="showHead === '1'">
       <!-- 非主流名字 -->
       <ion-col size="9">
-        <span class="title">{{title}}</span>
+        <span class="title">{{ title }}</span>
       </ion-col>
       <!-- 更多按钮 -->
       <ion-col size="3" class="more-box">
         <span class="more" @click="more">更多&gt;</span>
       </ion-col>
     </ion-row>
-    <ion-row v-if="mode==='row'" class="sliderRow" :style="{left:move+'px'}" @touchstart="touchStart"
-      @touchmove="touchMove" @touchend="touchEnd">
-      <ion-col class="sliderCol " size="3.8" v-for="item in data" :key="item.id" @click="fn(item.id)">
+    <ion-row
+      v-if="mode === 'row'"
+      class="sliderRow"
+      :style="{ left: move + 'px' }"
+      @touchstart="touchStart"
+      @touchmove="touchMove"
+      @touchend="touchEnd"
+    >
+      <ion-col
+        class="sliderCol"
+        size="3.8"
+        v-for="item in data"
+        :key="item.id"
+        @click="checkDetail(item.id)"
+      >
         <!-- 图片 -->
         <ion-img class="img bd" :src="item.coverImgUrl"></ion-img>
         <!-- 描述 -->
         <span class="name">
-          {{strFilter(item.name)}}
-          <span class="hid" v-if="item.name.length>17">
+          {{ strFilter(item.name) }}
+          <span class="hid" v-if="item.name.length > 17">
             <van-icon name="ellipsis" />
           </span>
         </span>
         <!-- 播放量 -->
         <span class="playCount">
           <i class="playoutline"></i>
-          <div>{{countFilter(item.playCount)}}</div>
+          <div>{{ countFilter(item.playCount) }}</div>
         </span>
       </ion-col>
     </ion-row>
     <ion-row v-else class="row">
-      <ion-col class="col " size="4" v-for="item in data" :key="item.id" @click="fn(item.id)">
+      <ion-col
+        class="col"
+        size="4"
+        v-for="item in data"
+        :key="item.id"
+        @click="checkDetail(item.id)"
+      >
         <!-- 图片 -->
-        <ion-img class="img bd" :src="item.picUrl?item.picUrl:item.coverImgUrl"></ion-img>
+        <ion-img
+          class="img bd"
+          :src="item.picUrl ? item.picUrl : item.coverImgUrl"
+        ></ion-img>
         <!-- 描述 -->
         <span class="name">
-          {{strFilter(item.name)}}
-          <span class="hid" v-if="item.name.length>17">
+          {{ strFilter(item.name) }}
+          <span class="hid" v-if="item.name.length > 17">
             <van-icon name="ellipsis" />
           </span>
         </span>
         <!-- 播放量 -->
         <span class="playCount">
           <i class="playoutline"></i>
-          <div>{{countFilter(item.playCount)}}</div>
+          <div>{{ countFilter(item.playCount) }}</div>
         </span>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <!-- 占位 -->
-  <div class="box" :style="{'text-align':'center', 'opacity':show}">没有更多歌单了哦...</div>
-
+  <div class="box" :style="{ 'text-align': 'center', opacity: show }">
+    没有更多歌单了哦...
+  </div>
 </template>
 
 <script lang='ts'>
@@ -63,7 +85,7 @@ import { Icon } from "vant";
 
 export default defineComponent({
   components: { IonGrid, IonRow, IonCol, IonImg, vanIcon: Icon },
-  emits: ["ok"],
+  emits: ["ok", "check-detail"],
   props: {
     //标题
     title: {
@@ -232,6 +254,11 @@ export default defineComponent({
       loadedMore,
       show,
     };
+  },
+  methods: {
+    checkDetail(id: number) {
+      this.$emit("check-detail", id);
+    },
   },
 });
 </script>

@@ -5,9 +5,17 @@
         <ion-title>Tab 1</ion-title>
       </ion-toolbar>
     </ion-header> -->
-    <ion-content scrollEvents @ionScroll='fn'>
-      <ion-header collapse="condense" class="myHeader" :style="{'position':position?'fixed':'static', 'top':'0'}">
-        <van-nav-bar left-text="歌单广场" left-arrow @click-left="onClickLeft" />
+    <ion-content scrollEvents @ionScroll="fn">
+      <ion-header
+        collapse="condense"
+        class="myHeader"
+        :style="{ position: position ? 'fixed' : 'static', top: '0' }"
+      >
+        <van-nav-bar
+          left-text="歌单广场"
+          left-arrow
+          @click-left="onClickLeft"
+        />
         <!-- <ion-toolbar>
           <ion-buttons>
             <ion-back-button default-href="/" color="dark"></ion-back-button>
@@ -15,30 +23,36 @@
         </ion-toolbar> -->
       </ion-header>
 
-      <div v-if="!bol" class="load">
-        loading...
-      </div>
+      <div v-if="!bol" class="load">loading...</div>
       <div v-else>
         <!-- 头部 -->
         <div class="container">
           <ion-grid class="grid">
             <ion-row>
               <ion-col size="5">
-                <ion-img :src="data.coverImgUrl" class="header-img" alt="封面图"></ion-img>
+                <ion-img
+                  :src="data.coverImgUrl"
+                  class="header-img"
+                  alt="封面图"
+                ></ion-img>
               </ion-col>
               <ion-col size="7">
                 <ion-row>
-                  <ion-col class="name">{{data.name}}</ion-col>
+                  <ion-col class="name">{{ data.name }}</ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col class="avatar">
-                    <ion-img :src="avatarUrls" class="img" alt="作者头像"></ion-img>
-                    <span>{{nicknames}}</span>
+                    <ion-img
+                      :src="avatarUrls"
+                      class="img"
+                      alt="作者头像"
+                    ></ion-img>
+                    <span>{{ nicknames }}</span>
                   </ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col class="descriptionBox" size="11">
-                    <div class="description">{{data.description}}</div>
+                    <div class="description">{{ data.description }}</div>
                   </ion-col>
                   <ion-col size="1">
                     <div class="more">&gt;</div>
@@ -46,7 +60,7 @@
                 </ion-row>
                 <ion-row>
                   <ion-col class="descriptionBox">
-                    <div class="description">{{toTime(data.createTime)}}</div>
+                    <div class="description">{{ toTime(data.createTime) }}</div>
                   </ion-col>
                 </ion-row>
               </ion-col>
@@ -58,18 +72,18 @@
             <ion-row class="stateRow">
               <!-- <ion-col class="cirleLeft" size="1"></ion-col> -->
               <ion-col class="col add" size="4">
-                <van-icon name="add-o" size='20rem' />
-                <span>{{countFilter(data.subscribedCount, 1)}}</span>
+                <van-icon name="add-o" size="20rem" />
+                <span>{{ countFilter(data.subscribedCount, 1) }}</span>
               </ion-col>
               <ion-col class="vertical">|</ion-col>
               <ion-col class="col comment" size="3" @click="onRouteToComment">
-                <van-icon name="comment-o" size='20rem' />
-                <span>{{data.commentCount}}</span>
+                <van-icon name="comment-o" size="20rem" />
+                <span>{{ data.commentCount }}</span>
               </ion-col>
               <ion-col class="vertical">|</ion-col>
               <ion-col class="col share" size="3">
-                <van-icon name="share-o" size='20rem' />
-                <span>{{data.shareCount}}</span>
+                <van-icon name="share-o" size="20rem" />
+                <span>{{ data.shareCount }}</span>
               </ion-col>
               <!-- <ion-col class="rightCircle" size="1"></ion-col> -->
             </ion-row>
@@ -80,22 +94,26 @@
         <ion-grid class="playAll">
           <ion-row>
             <ion-col size="1" class="allIndex">
-              <van-icon name="play-circle" color='red' />
+              <van-icon name="play-circle" color="red" />
             </ion-col>
             <ion-col size="11" class="content">
               <div class="title">播放全部</div>
-              <div class="length">（{{data.trackIds.length}}）</div>
+              <div class="length">（{{ data.trackIds.length }}）</div>
             </ion-col>
           </ion-row>
         </ion-grid>
 
         <!-- 歌曲部分 -->
         <ion-grid>
-          <ion-row v-for="(item,index) in song" :key="item.id" class="content-row">
-            <ion-col size="1" class="index">{{index+1}}</ion-col>
+          <ion-row
+            v-for="(item, index) in song"
+            :key="item.id"
+            class="content-row"
+          >
+            <ion-col size="1" class="index">{{ index + 1 }}</ion-col>
             <ion-col size="10" class="content">
-              <div class="title">{{item.name}}</div>
-              <div class="avatar">{{item.ar[0].name}}</div>
+              <div class="title">{{ item.name }}</div>
+              <div class="avatar">{{ item.ar[0].name }}</div>
             </ion-col>
             <ion-col size="1" class="open">...</ion-col>
           </ion-row>
@@ -103,9 +121,14 @@
       </div>
 
       <!-- 占位 -->
-      <div class="box" ref="box" :style="{'text-align':'center', 'opacity':show}">没有更多歌单了哦...</div>
+      <div
+        class="box"
+        ref="box"
+        :style="{ 'text-align': 'center', opacity: show }"
+      >
+        没有更多歌单了哦...
+      </div>
     </ion-content>
-
   </ion-page>
 </template>
 
@@ -143,13 +166,19 @@ export default defineComponent({
     vanIcon: Icon,
     vanNavBar: NavBar,
   },
-  setup() {
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+  },
+  setup(props) {
     //路由
     const router = useRouter();
 
     //数据
     const data = ref([]);
-    const id = ref(router.currentRoute.value.params.id); //歌单ID
+    const id = ref(props.id); //歌单ID
 
     const avatarUrls = ref(""); //用户头像
     const nicknames = ref(""); //用户名字

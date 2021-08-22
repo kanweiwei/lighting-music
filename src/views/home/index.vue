@@ -14,21 +14,31 @@
       </div>
 
       <!-- 精品歌单，可重用 -->
-      <div style="margin-top:10rem">
-        <song-list title="次车库的雷达歌单" tag="欧美"></song-list>
+      <div style="margin-top: 10rem">
+        <song-list
+          title="次车库的雷达歌单"
+          tag="欧美"
+          @check-detail="checkSongListDetail"
+        ></song-list>
       </div>
 
       <!-- 推荐歌单 -->
-      <song-list title="推荐歌单" mode="col" type="recommend" :num=9></song-list>
+      <song-list
+        title="推荐歌单"
+        mode="col"
+        type="recommend"
+        :num="9"
+        @check-detail="checkSongListDetail"
+      ></song-list>
     </ion-content>
   </ion-page>
 </template>
 
 <script>
 import BannerApi from "@/services/banner.service.js";
-import safeArea from "@/components/safe-area.vue";//搜索框
+import safeArea from "@/components/safe-area.vue"; //搜索框
 import songList from "@/components/songList.vue"; //歌单列表
-import Search from './search.vue'
+import Search from "./search.vue";
 import { IonPage, IonContent } from "@ionic/vue";
 import { Swipe, SwipeItem } from "vant";
 
@@ -40,30 +50,30 @@ export default {
     songList,
     VanSwipe: Swipe,
     VanSwipeItem: SwipeItem,
-    Search
+    Search,
   },
-  data () {
+  data() {
     return {
-      banners: []
+      banners: [],
     };
   },
-  setup () {
+  setup() {
     const slideOpts = {
       initialSlide: 1,
       speed: 400,
       autoplay: {
-        delay: 2000
+        delay: 2000,
       },
       effect: "flip",
-      loop: true
+      loop: true,
     };
     return { slideOpts };
   },
-  ionViewDidEnter () {
+  ionViewDidEnter() {
     this.getBanners();
   },
   methods: {
-    async getBanners () {
+    async getBanners() {
       try {
         const res = await BannerApi.get({ type: 2 });
         this.banners = res.banners;
@@ -71,10 +81,13 @@ export default {
         console.log(error);
       }
     },
-    // slideLoaded(e) {
-    //   console.log(e);
-    // }
-  }
+    checkSongListDetail(id) {
+      this.$router.push({
+        name: "songListDetail",
+        params: { id },
+      });
+    },
+  },
 };
 </script>
 
