@@ -11,11 +11,6 @@
         class="myHeader"
         :style="{ position: position ? 'fixed' : 'static', top: '0' }"
       >
-        <van-nav-bar
-          left-text="歌单广场"
-          left-arrow
-          @click-left="onClickLeft"
-        />
         <!-- <ion-toolbar>
           <ion-buttons>
             <ion-back-button default-href="/" color="dark"></ion-back-button>
@@ -134,21 +129,20 @@
 
 
 <script lang='ts'>
-import { defineComponent, ref } from "vue";
+import { countFilter, toTime } from "@/utils/commont";
 import {
-  IonPage,
-  IonHeader,
+  IonCol,
   IonContent,
   IonGrid,
-  IonRow,
-  IonCol,
+  IonHeader,
   IonImg,
+  IonPage,
+  IonRow,
 } from "@ionic/vue";
-
+import { Icon } from "vant";
+import { defineComponent, ref } from "vue";
 //路由
 import { useRouter } from "vue-router";
-import { Icon, NavBar } from "vant";
-import { countFilter, toTime } from "@/utils/commont";
 
 interface AllList {
   id: number;
@@ -164,7 +158,6 @@ export default defineComponent({
     IonCol,
     IonImg,
     vanIcon: Icon,
-    vanNavBar: NavBar,
   },
   props: {
     id: {
@@ -310,6 +303,7 @@ export default defineComponent({
   position: relative;
   background-color: rgb(199, 170, 180);
   border-radius: 0 0 3% 3%;
+  font-size: 12px;
 }
 
 .grid {
@@ -360,6 +354,7 @@ export default defineComponent({
   background: white;
   z-index: 2;
   border-radius: 20rem;
+  font-size: 12px;
 }
 
 .stateGrid .stateRow .vertical {

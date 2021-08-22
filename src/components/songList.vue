@@ -288,6 +288,7 @@ ion-grid {
   width: 50rem;
   font-size: 5rem;
   border: 2rem solid rgb(230, 229, 229);
+  font-size: 12px;
   text-align: center;
   border-radius: 30rem;
   line-height: 20rem;
@@ -334,6 +335,7 @@ ion-grid {
   border-radius: 10rem;
   padding: 0 8rem;
   transform: scale(0.8);
+  font-size: 12px;
 }
 .playCount .playoutline {
   width: 0rem;

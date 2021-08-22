@@ -4,32 +4,40 @@
     <!-- <ion-searchbar show-cancel-button="never" class="searchBar"></ion-searchbar> -->
     <search></search>
     <ion-content>
-      <div class="banners-container">
-        <van-swipe :autoplay="3000" :lazy-render="true">
-          <van-swipe-item v-for="banner in banners" :key="banner.bannerId">
-            <img v-lazy="banner.pic" />
-            <div class="img-label">新歌首发</div>
-          </van-swipe-item>
-        </van-swipe>
-      </div>
+      <div style="padding-bottom: 100px">
+        <div class="banners-container">
+          <van-swipe :autoplay="3000" :lazy-render="true">
+            <van-swipe-item v-for="banner in banners" :key="banner.bannerId">
+              <van-image :src="banner.pic" @click="checkBanner(banner)" />
+              <div class="img-label">{{ banner.typeTitle }}</div>
+            </van-swipe-item>
+          </van-swipe>
+        </div>
 
-      <!-- 精品歌单，可重用 -->
-      <div style="margin-top: 10rem">
+        <!-- 精品歌单，可重用 -->
+        <div style="margin-top: 10rem">
+          <song-list
+            title="次车库的雷达歌单"
+            tag="欧美"
+            @check-detail="checkSongListDetail"
+          ></song-list>
+        </div>
+
+        <!-- 推荐歌单 -->
         <song-list
-          title="次车库的雷达歌单"
-          tag="欧美"
+          title="推荐歌单"
+          mode="col"
+          type="recommend"
+          :num="9"
           @check-detail="checkSongListDetail"
         ></song-list>
+        <home-audio-player
+          :src="currentAudio.url"
+          :img="currentAudio.pic"
+          :name="currentAudio.name"
+          :author="currentAudio.author"
+        />
       </div>
-
-      <!-- 推荐歌单 -->
-      <song-list
-        title="推荐歌单"
-        mode="col"
-        type="recommend"
-        :num="9"
-        @check-detail="checkSongListDetail"
-      ></song-list>
     </ion-content>
   </ion-page>
 </template>
@@ -41,6 +49,9 @@ import songList from "@/components/songList.vue"; //歌单列表
 import Search from "./search.vue";
 import { IonPage, IonContent } from "@ionic/vue";
 import { Swipe, SwipeItem } from "vant";
+import HomeAudioPlayer from "@/components/homeAudioPlayer.vue";
+import { Image as VanImage } from "vant";
+import SongService from "@/services/song.service.js";
 
 export default {
   components: {
@@ -51,10 +62,18 @@ export default {
     VanSwipe: Swipe,
     VanSwipeItem: SwipeItem,
     Search,
+    HomeAudioPlayer,
+    VanImage,
   },
   data() {
     return {
       banners: [],
+      currentAudio: {
+        url: "",
+        pic: "",
+        name: "",
+        author: "",
+      },
     };
   },
   setup() {
@@ -86,6 +105,28 @@ export default {
         name: "songListDetail",
         params: { id },
       });
+    },
+    async checkBanner(item) {
+      switch (item.targetType) {
+        case 1: {
+          console.log(item);
+          const song = await SongService.getUrl(item.targetId);
+          if (song.code === 200 && song.data.length) {
+            this.currentAudio.url = song.data[0].url;
+            this.currentAudio.pic = item.pic;
+            this.currentAudio.name = item.song.name;
+            if (item.song.ar.length) {
+              this.currentAudio.author = item.song.ar[0].name;
+            } else {
+              this.currentAudio.author = "";
+            }
+          }
+          break;
+        }
+
+        default:
+          break;
+      }
     },
   },
 };

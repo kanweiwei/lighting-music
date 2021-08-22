@@ -1,40 +1,42 @@
 <template>
   <ion-page>
-
-    <ion-content scrollEvents @ionScroll='fn'>
-      <ion-header>
-        <van-nav-bar left-text="歌单广场" left-arrow @click-left="onClickLeft" />
-      </ion-header>
-
+    <ion-content scrollEvents @ionScroll="fn">
       <van-tabs v-model:active="active">
-        <van-tab v-for="tag in tags" :key="tag.playlistTag.id" :title="tag.playlistTag.name"
-          :name="tag.playlistTag.name">
-          <song-list mode="col" showHead="0" :tag="active" :num="page" @ok="show=1" ref="songList"></song-list>
+        <van-tab
+          v-for="tag in tags"
+          :key="tag.playlistTag.id"
+          :title="tag.playlistTag.name"
+          :name="tag.playlistTag.name"
+        >
+          <song-list
+            mode="col"
+            showHead="0"
+            :tag="active"
+            :num="page"
+            @ok="show = 1"
+            ref="songList"
+          ></song-list>
         </van-tab>
       </van-tabs>
 
       <!-- 占位 -->
       <div class="box" ref="box"></div>
-
     </ion-content>
-
   </ion-page>
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref } from "vue";
-import { NavBar, Tabs, Tab } from "vant";
-import { IonPage, IonHeader, IonContent } from "@ionic/vue";
-import { useRouter } from "vue-router";
 import songList from "@/components/songList.vue";
+import { IonContent, IonPage } from "@ionic/vue";
+import { Tab, Tabs } from "vant";
+import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
-    vanNavBar: NavBar,
     vanTabs: Tabs,
     vanTab: Tab,
     IonPage,
-    IonHeader,
     IonContent,
     songList,
   },
