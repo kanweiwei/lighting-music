@@ -6,7 +6,7 @@
       </ion-toolbar>
     </ion-header> -->
     <ion-content scrollEvents @ionScroll='fn'>
-      <ion-header collapse="condense">
+      <ion-header collapse="condense" class="myHeader" :style="{'position':position?'fixed':'static', 'top':'0'}">
         <van-nav-bar left-text="歌单广场" left-arrow @click-left="onClickLeft" />
         <!-- <ion-toolbar>
           <ion-buttons>
@@ -103,7 +103,7 @@
       </div>
 
       <!-- 占位 -->
-      <div class="box" ref="box"></div>
+      <div class="box" ref="box" :style="{'text-align':'center', 'opacity':show}">没有更多歌单了哦...</div>
     </ion-content>
 
   </ion-page>
@@ -167,11 +167,17 @@ export default defineComponent({
     //可见高
     const clientHeight = document.body.clientHeight;
 
+    const show = ref(0); //底部显示隐藏
+
+    const total = ref(10);
+
     //元素属性
     let rect: any;
 
     //分割数据
     let n = 1;
+
+    const position = ref(false);
 
     async function allSong(data: any) {
       //用户登录歌曲数量
@@ -189,15 +195,25 @@ export default defineComponent({
     }
 
     //滚动
-    const fn = () => {
+    const fn = (ev: any) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
         rect = box.value.getBoundingClientRect();
-        if (rect.top < clientHeight) {
-          n++;
-          allSong(data.value);
+        if (song.value.length < total.value) {
+          if (rect.top < clientHeight) {
+            n++;
+            allSong(data.value);
+          }
+        } else {
+          show.value = 1;
         }
       }, 500);
+
+      if (ev.detail.scrollTop > 0) {
+        position.value = true;
+      } else {
+        position.value = false;
+      }
     };
 
     const axios = async () => {
@@ -210,6 +226,7 @@ export default defineComponent({
 
       data.value = playlist;
       bol.value = true;
+      total.value = playlist.trackIds.length;
 
       avatarUrls.value = playlist.creator.avatarUrl; //用户头像
       nicknames.value = playlist.creator.nickname; //用户名字
@@ -242,6 +259,8 @@ export default defineComponent({
       fn,
       box,
       onRouteToComment,
+      position,
+      show,
     };
   },
 });

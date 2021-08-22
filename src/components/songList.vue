@@ -211,7 +211,6 @@ export default defineComponent({
         if (data.value.length < total) {
           n++;
           num.value += 15;
-          console.log(n, num.value);
           axios();
         } else {
           show.value = 1;

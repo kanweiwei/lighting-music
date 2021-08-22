@@ -16,9 +16,6 @@
       <!-- 占位 -->
       <div class="box" ref="box"></div>
 
-      <!-- 回到顶部 -->
-      <!-- <van-icon @click="toTop" name="back-top" class="toTop" size="25rem" color="red" /> -->
-      <div @click="toTop" class="toTop">123123</div>
     </ion-content>
 
   </ion-page>
@@ -80,14 +77,6 @@ export default defineComponent({
     //回到顶部
     const showToTop = ref(false);
 
-    //回到顶部函数
-    const toTop = () => {
-      const top = document.querySelector("ion-content");
-      if (top) {
-        top.scrollToTop(500);
-      }
-    };
-
     //滚动函数
     const fn = (ev: any) => {
       clearTimeout(timer);
@@ -124,7 +113,6 @@ export default defineComponent({
       songList,
       fn,
       showToTop,
-      toTop,
     };
   },
 });
