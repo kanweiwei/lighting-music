@@ -12,7 +12,7 @@
                     </div>
                     <p id="like-count">{{likedCount}}赞</p>                   
                 </div>
-                <p id="content">{{content}}</p>
+                <p id="content" v-html="convert2EmtString(content)"></p>
                 <p v-if="showFloorComment && showFloorComment.replyCount>0">
                     <ion-text color="primary" @click="showPopup(commentId)">{{showFloorComment.replyCount}}条回复></ion-text>
                 </p>
@@ -28,6 +28,7 @@
 <script>
 import { defineComponent } from "@vue/runtime-core";
 import { IonAvatar,IonLabel,IonItem,IonText } from '@ionic/vue'
+import Emt from '@/assets/netease-emoji/emt_dict.json'
 
 export default defineComponent({
     name: 'comment-card',
@@ -58,6 +59,23 @@ export default defineComponent({
                 format=format[1]+"月"+format[2]+"日"
             }
             return format
+        },
+        convert2EmtString() {
+            return (str) => {
+                let result = str
+                const emt = str.match(/\[([\u4e00-\u9fa50-9]*)\]/g)
+                if(emt && emt.length>0){
+                    Array.from(emt).forEach(val => {
+                        //console.log(str,val)
+                        const target=val.replace('[','').replace(']','')
+                        const emoji = Emt[target]
+                        if(emoji)
+                            result = result.replace(val,emoji)
+                    })                    
+                }
+                
+                return result
+            }
         }
     }
 })
