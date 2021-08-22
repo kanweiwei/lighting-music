@@ -104,6 +104,7 @@
             v-for="(item, index) in song"
             :key="item.id"
             class="content-row"
+            @click="playSong(item)"
           >
             <ion-col size="1" class="index">{{ index + 1 }}</ion-col>
             <ion-col size="10" class="content">
@@ -149,6 +150,7 @@ interface AllList {
 }
 
 export default defineComponent({
+  emits: ["play-song"],
   components: {
     IonPage,
     IonHeader,
@@ -285,6 +287,11 @@ export default defineComponent({
       show,
     };
   },
+  methods: {
+    playSong(item: unknown) {
+      this.$emit("play-song", item);
+    },
+  },
 });
 </script>
 <style scoped>
@@ -408,6 +415,7 @@ export default defineComponent({
 
 .content-row {
   margin-bottom: 10rem;
+  font-size: 12px;
 }
 .content .title {
   font-size: 15rem;

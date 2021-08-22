@@ -1,13 +1,9 @@
 <template>
   <ion-page>
     <safe-area />
-    <van-nav-bar
-      title="歌单"
-      left-arrow
-      @click-left="back"
-    />
+    <van-nav-bar title="歌单" left-arrow @click-left="back" />
     <ion-content>
-      <song-list-detail :id="id" />
+      <song-list-detail :id="id" @play-song="playSong" />
     </ion-content>
   </ion-page>
 </template>
@@ -37,6 +33,15 @@ export default {
   methods: {
     back() {
       this.router.back();
+    },
+    playSong(item) {
+      this.router.push({
+        name: "songPlay",
+        params: {
+          id: item.id,
+        },
+        query: { ...item, picUrl: item.al.picUrl, author: item.ar[0].name },
+      });
     },
   },
 };

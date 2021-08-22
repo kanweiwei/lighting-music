@@ -33,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "searchDetail",
     component: () => import("@/views/home/searchDetail.vue"),
   },
+  {
+    path: "/songPlay/:id",
+    name: "songPlay",
+    component: () => import("@/views/songPlay/index.vue"),
+  },
 ];
 
 const router = createRouter({
