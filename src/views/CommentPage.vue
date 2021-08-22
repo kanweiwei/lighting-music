@@ -16,6 +16,7 @@
             @load="getMoreComment"
             style="height:100%;width:100%;overflow-y:auto;"
             >
+                <!-- 安卓下时56 -->
                 <van-sticky :offset-top="44">
                     <div id="comment-bar">
                         <div id="bar-title">评论区</div>
