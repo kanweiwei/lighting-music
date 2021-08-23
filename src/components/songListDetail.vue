@@ -6,11 +6,7 @@
       </ion-toolbar>
     </ion-header> -->
     <ion-content scrollEvents @ionScroll="fn">
-      <ion-header
-        collapse="condense"
-        class="myHeader"
-        :style="{ position: position ? 'fixed' : 'static', top: '0' }"
-      >
+      <ion-header collapse="condense" class="myHeader">
         <!-- <ion-toolbar>
           <ion-buttons>
             <ion-back-button default-href="/" color="dark"></ion-back-button>
@@ -25,11 +21,7 @@
           <ion-grid class="grid">
             <ion-row>
               <ion-col size="5">
-                <ion-img
-                  :src="data.coverImgUrl"
-                  class="header-img"
-                  alt="封面图"
-                ></ion-img>
+                <ion-img :src="data.coverImgUrl" class="header-img" alt="封面图"></ion-img>
               </ion-col>
               <ion-col size="7">
                 <ion-row>
@@ -37,11 +29,7 @@
                 </ion-row>
                 <ion-row>
                   <ion-col class="avatar">
-                    <ion-img
-                      :src="avatarUrls"
-                      class="img"
-                      alt="作者头像"
-                    ></ion-img>
+                    <ion-img :src="avatarUrls" class="img" alt="作者头像"></ion-img>
                     <span>{{ nicknames }}</span>
                   </ion-col>
                 </ion-row>
@@ -100,12 +88,7 @@
 
         <!-- 歌曲部分 -->
         <ion-grid>
-          <ion-row
-            v-for="(item, index) in song"
-            :key="item.id"
-            class="content-row"
-            @click="playSong(item)"
-          >
+          <ion-row v-for="(item, index) in song" :key="item.id" class="content-row" @click="playSong(item)">
             <ion-col size="1" class="index">{{ index + 1 }}</ion-col>
             <ion-col size="10" class="content">
               <div class="title">{{ item.name }}</div>
@@ -117,11 +100,7 @@
       </div>
 
       <!-- 占位 -->
-      <div
-        class="box"
-        ref="box"
-        :style="{ 'text-align': 'center', opacity: show }"
-      >
+      <div class="box" ref="box" :style="{ 'text-align': 'center', opacity: show }">
         没有更多歌单了哦...
       </div>
     </ion-content>
@@ -201,8 +180,6 @@ export default defineComponent({
     //分割数据
     let n = 1;
 
-    const position = ref(false);
-
     async function allSong(data: any) {
       //用户登录歌曲数量
       let url = "https://qcz1as.app.cloudendpoint.cn/song/detail?ids=";
@@ -232,12 +209,6 @@ export default defineComponent({
           show.value = 1;
         }
       }, 500);
-
-      if (ev.detail.scrollTop > 0) {
-        position.value = true;
-      } else {
-        position.value = false;
-      }
     };
 
     const axios = async () => {
@@ -283,7 +254,6 @@ export default defineComponent({
       fn,
       box,
       onRouteToComment,
-      position,
       show,
     };
   },
@@ -435,5 +405,7 @@ export default defineComponent({
 .box {
   height: 10rem;
   width: 100%;
+  font-size: 14rem;
+  font-weight: bold;
 }
 </style>

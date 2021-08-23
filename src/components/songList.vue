@@ -10,21 +10,9 @@
         <span class="more" @click="more">更多&gt;</span>
       </ion-col>
     </ion-row>
-    <ion-row
-      v-if="mode === 'row'"
-      class="sliderRow"
-      :style="{ left: move + 'px' }"
-      @touchstart="touchStart"
-      @touchmove="touchMove"
-      @touchend="touchEnd"
-    >
-      <ion-col
-        class="sliderCol"
-        size="3.8"
-        v-for="item in data"
-        :key="item.id"
-        @click="checkDetail(item.id)"
-      >
+    <ion-row v-if="mode === 'row'" class="sliderRow" :style="{ left: move + 'px' }" @touchstart="touchStart"
+      @touchmove="touchMove" @touchend="touchEnd">
+      <ion-col class="sliderCol" size="3.8" v-for="item in data" :key="item.id" @click="checkDetail(item.id)">
         <!-- 图片 -->
         <ion-img class="img bd" :src="item.coverImgUrl"></ion-img>
         <!-- 描述 -->
@@ -42,18 +30,9 @@
       </ion-col>
     </ion-row>
     <ion-row v-else class="row">
-      <ion-col
-        class="col"
-        size="4"
-        v-for="item in data"
-        :key="item.id"
-        @click="checkDetail(item.id)"
-      >
+      <ion-col class="col" size="4" v-for="item in data" :key="item.id" @click="checkDetail(item.id)">
         <!-- 图片 -->
-        <ion-img
-          class="img bd"
-          :src="item.picUrl ? item.picUrl : item.coverImgUrl"
-        ></ion-img>
+        <ion-img class="img bd" :src="item.picUrl ? item.picUrl : item.coverImgUrl"></ion-img>
         <!-- 描述 -->
         <span class="name">
           {{ strFilter(item.name) }}
@@ -280,20 +259,16 @@ ion-grid {
   box-shadow: 0 -3rem 1rem rgb(219, 219, 219);
 }
 
-.col {
-  margin-bottom: 5rem;
-}
 .more {
   display: inline-block;
-  width: 50rem;
-  font-size: 5rem;
-  border: 2rem solid rgb(230, 229, 229);
-  font-size: 12px;
+  border: 1rem solid rgb(230, 229, 229);
+  font-size: 12rem;
   text-align: center;
   border-radius: 30rem;
-  line-height: 20rem;
+  line-height: 150%;
   background-color: white;
   font-weight: 600;
+  padding: 1rem 8rem;
 }
 .sliderRow {
   display: flex;
@@ -317,7 +292,6 @@ ion-grid {
   // bottom: -5rem;
   position: relative;
   display: inline-block;
-  bottom: -5rem;
   // z-index: 2;
   font-size: 15rem;
 }
@@ -329,7 +303,7 @@ ion-grid {
   top: 5%;
   right: 1%;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(53, 52, 52, 0.6);
   color: white;
   line-height: 20rem;
   border-radius: 10rem;
@@ -340,12 +314,14 @@ ion-grid {
 .playCount .playoutline {
   width: 0rem;
   height: 0rem;
-  border-width: 6rem;
+  border-width: 5rem;
   border-color: transparent transparent transparent white;
   border-style: solid;
 }
 .box {
   height: 10rem;
   width: 100%;
+  font-weight: bold;
+  font-size: 14rem;
 }
 </style>

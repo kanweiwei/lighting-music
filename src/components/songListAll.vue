@@ -2,20 +2,9 @@
   <ion-page>
     <ion-content scrollEvents @ionScroll="fn">
       <van-tabs v-model:active="active">
-        <van-tab
-          v-for="tag in tags"
-          :key="tag.playlistTag.id"
-          :title="tag.playlistTag.name"
-          :name="tag.playlistTag.name"
-        >
-          <song-list
-            mode="col"
-            showHead="0"
-            :tag="active"
-            :num="page"
-            @ok="show = 1"
-            ref="songList"
-          ></song-list>
+        <van-tab v-for="tag in tags" :key="tag.playlistTag.id" :title="tag.playlistTag.name"
+          :name="tag.playlistTag.name">
+          <song-list mode="col" showHead="0" :tag="active" :num="page" @ok="show = 1" ref="songList"></song-list>
         </van-tab>
       </van-tabs>
 
